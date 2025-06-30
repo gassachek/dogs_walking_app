@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль владельца</title>
+  <link rel="stylesheet" href="/static/profile.css">
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo">DogWalk</div>
+    <nav class="navbar">
+      <ul class="nav-list">
+        <li><a href="/profile/{{ user_id }}">Профиль</a></li>
+        <li><a href="/parks">Парки</a></li>
+        <li><a href="/meetings">Встречи</a></li>
+        <li><a href="/logout">Выйти</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="container">
+    <h2>Профиль владельца</h2>
+
+    <!-- Личные данные владельца -->
+    <form id="owner-info" class="form">
+      <h3>Личные данные</h3>
+      <div class="form-group">
+        <label for="owner-name">ФИО</label>
+        <input type="text" id="owner-name" value="{{ user[0] if user else '' }}" placeholder="Введите ФИО" required>
+      </div>
+      <div class="form-group">
+        <label for="owner-contact">Контактная информация</label>
+        <input type="text" id="owner-contact" value="{{ user[1] if user else '' }}" placeholder="Введите контактные данные" required>
+      </div>
+      <button type="submit" class="btn">Сохранить</button>
+    </form>
+
+    <!-- Добавление собак -->
+    <form action="/add_dog" method="post">
+      <label for="dog-name">Имя собаки:</label>
+      <input type="text" id="dog-name" name="dog_name" required>
+
+      <label for="dog-breed">Порода:</label>
+      <select id="dog-breed" name="breed_id" required>
+        <option value="1">Лабрадор</option>
+        <option value="2">Чихуахуа</option>
+        <option value="3">Бигль</option>
+      </select>
+
+      <label for="dog-size">Размер:</label>
+      <select id="dog-size" name="size" required>
+        <option value="small">Маленькая</option>
+        <option value="medium">Средняя</option>
+        <option value="large">Большая</option>
+      </select>
+
+      <label for="dog-activity">Уровень активности:</label>
+      <select id="dog-activity" name="activity_level" required>
+        <option value="low">Низкий</option>
+        <option value="medium">Средний</option>
+        <option value="high">Высокий</option>
+      </select>
+
+      <button type="submit">Добавить собаку</button>
+    </form>
+
+    <!-- Список добавленных собак -->
+    <div id="dog-list" class="form">
+      <h3>Ваши собаки</h3>
+      <ul>
+        {% for dog in dogs %}
+        <li>{{ dog[0] }} - {{ dog[1] }} ({{ dog[2] }}, {{ dog[3] }})</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Парки и встречи</title>
+  <link rel="stylesheet" href="/static/parks.css">
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo">DogWalk</div>
+    <nav class="navbar">
+      <ul class="nav-list">
+        <li><a href="/profile/{{ user_id }}">Профиль</a></li>
+        <li><a href="/parks">Парки</a></li>
+        <li><a href="/meetings">Встречи</a></li>
+        <li><a href="/logout">Выйти</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Доступные парки</h2>
+    <ul>
+      {% for park in parks %}
+        <li>
+          <strong>{{ park[1] }}</strong> - {{ park[2] }} <br>
+          <em>{{ park[3] }}</em>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h3>Организовать встречу</h3>
+    <form action="/create_meeting" method="post">
+      <label for="park">Выберите парк:</label>
+      <select name="park_id" id="park" required>
+        {% for park in parks %}
+          <option value="{{ park[0] }}">{{ park[1] }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="date">Дата:</label>
+      <input type="date" name="date" id="date" required>
+
+      <label for="time">Время:</label>
+      <input type="time" name="time" id="time" required>
+
+      <label for="duration">Продолжительность (в минутах):</label>
+      <input type="number" name="duration" id="duration" required>
+
+      <label for="dogs">Выберите собак:</label>
+      <select name="dog_ids" id="dogs" multiple required>
+        {% for dog in dogs %}
+          <option value="{{ dog[0] }}">{{ dog[1] }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">Создать встречу</button>
+    </form>
+  </div>
+</body>
+</html>

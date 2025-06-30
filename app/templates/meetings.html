@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Встречи</title>
+  <link rel="stylesheet" href="/static/meetings.css">
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo">DogWalk</div>
+    <nav class="navbar">
+      <ul class="nav-list">
+        <li><a href="/profile/{{ user_id }}">Профиль</a></li>
+        <li><a href="/parks">Парки</a></li>
+        <li><a href="/meetings">Встречи</a></li>
+        <li><a href="/logout">Выйти</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Список встреч</h2>
+    <ul class="meeting-list">
+      {% for meeting in meetings %}
+        <li>
+          <strong>Парк:</strong> {{ meeting[3] }} <br>
+          <strong>Дата и время:</strong> {{ meeting[1] }} <br>
+          <strong>Длительность:</strong> {{ meeting[2] }} <br>
+          <strong>Организатор:</strong> {{ meeting[4] }}
+
+          <h4>Участники:</h4>
+          <ul>
+            {% for participant in meeting_participants[meeting[0]] %}
+              <li>{{ participant[0] }} с собакой {{ participant[1] }}</li>
+            {% endfor %}
+          </ul>
+
+          <form action="/join_meeting" method="post">
+            <input type="hidden" name="meeting_id" value="{{ meeting[0] }}">
+            <label for="dog_id">Выберите собаку:</label>
+            <select name="dog_id" required>
+              {% for dog in user_dogs %}
+                <option value="{{ dog[0] }}">{{ dog[1] }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit">Присоединиться</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>
